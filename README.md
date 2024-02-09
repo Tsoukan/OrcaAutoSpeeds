@@ -19,9 +19,6 @@ You can run the script anytime, if OrcaSlicer is running you will need to restar
 8. Restart OrcaSlicer if it was running.
 9. Select your new process preset and confirm the speed settings.
 
-Know issues:
-1. It does not check to see if it will overwrite an existing profile!!!
-
 ## The multipliers
 The multipliers for the speed parameters are in the CSV file and are percentages of the base speed entered when you run the script.  They currently mimic more or less the way the speeds are scaled in Cura.  
 The parameter names match those used in Orca slicer - hover over a value and it will show at show the name in the tooltip.
