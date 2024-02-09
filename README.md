@@ -1,4 +1,7 @@
 This is a work in progress.  It should not do anything catostrophic but ***Use at your own risk***.
+
+![OrcaSpoon (Custom)](https://github.com/Tsoukan/Speed-Output-for-OrcaSlicer-for-Noobs/assets/55215587/c62d8c85-24c4-4bac-b78e-ccefc819b4dc)
+
 # Speed Output for OrcaSlicer for Noobs
 Being a Noob to 3d printing and I found it frustrating to have to edit all the speed setting in Orcaslicer if I wanted to speed up or slow down a profile either for quality reasons, or because the filament I was printing needed it.  Also not truely understanding the relationships between each of these settings I was an exercise in frustration to figure out reasonable starting values.  
 To solve my frustrations and **spoon** feed some starting speeds into a profile I wrote this script.  
