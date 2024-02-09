@@ -33,7 +33,7 @@ else {
 }
 
 #Get the speed multipliers from the csv file
-$csvFilePath = "$env:USERPROFILE\AppData\Roaming\OrcaSlicer\user\default\process\auto_speed_multipliers.csv"  # Replace with the actual path to your CSV file
+$csvFilePath = "$env:USERPROFILE\AppData\Roaming\OrcaSlicer\user\default\process\SPOON_multipliers.csv"  # Replace with the actual path to your CSV file
 
 # Specify the directory containing the JSON files
 $directoryPath = "$env:USERPROFILE\AppData\Roaming\OrcaSlicer\user\default\process"
@@ -101,14 +101,52 @@ foreach ($row in $csvData) {
     }
 }
 
+
+# Check if original file name ends with " - Copy" and remove it
+if ($originalFileName -match "copy$") {
+    write-host $originalFileName
+    # Replace the " - Copy" substring with an empty string
+    $originalFileName = $originalFileName -replace " - Copy", ""
+}
 # Create a new filename with "speed" and the number appended
-$originalFileName = $jsonFiles[$selectedIndex - 1].BaseName
+# $originalFileName = $jsonFiles[$selectedIndex - 1].BaseName
 $newFileName = "${originalFileName} @${number}mm.json"
+write-host $newFileName
 $newJsonFilePath = [System.IO.Path]::Combine($directoryPath, $newFileName)
 
+# Check if the file already exists
+
+# Split the filename into path, name, and extension
+$path =  [System.IO.Path]::GetDirectoryName($newJsonFilePath)
+$name = [System.IO.Path]::GetFileNameWithoutExtension($newJsonFilePath)
+$ext = [System.IO.Path]::GetExtension($newJsonFilePath)
+# Check if the name already has a number in parenthesis
+if ($name -match '\((\d+)\)$') {
+  # Extract the number and increment it by one
+  $num = [int]$Matches[1] + 1
+  # Remove the old number from the name
+  $name = $name -replace '\(\d+\)$', ''
+}
+else {
+  # Start with number one
+  $num = 1
+}
+# Loop until a unique filename is found
+do {
+  # Append the number in parenthesis to the name
+  $new_name = $name + "($num)"
+  # Join the path, new name, and extension
+  $newJsonFilePath = Join-Path -Path $path -ChildPath ($new_name + $ext)
+  # Increment the number
+  $num++
+}
+while (Test-Path -Path $newJsonFilePath)
+# Return the new filename
+$newJsonFilePath
+
 # Update the name parameter in the JSON data
-$jsonData.name = [System.IO.Path]::GetFileNameWithoutExtension($newFileName)
-$jsonData.print_settings_id = [System.IO.Path]::GetFileNameWithoutExtension($newFileName)
+$jsonData.name = $Name
+$jsonData.print_settings_id = $Name
 
 # Save the updated JSON data to the new file
 $jsonData | ConvertTo-Json | Set-Content -Path $newJsonFilePath
